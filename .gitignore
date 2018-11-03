@@ -1,3 +1,6 @@
+# node_modules -- run npm install when cloning / pulling
+node_modules
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
