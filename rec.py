@@ -11,15 +11,15 @@ with open("labels.pickle", "rb") as f:
     og_labels = pickle.load(f)
     labels = {v:k for k, v in og_labels.items()}
 
-#cap = cv2.VideoCapture(0)
-url = "http://100.64.72.17:8080/shot.jpg"#changes almost everytime you use it
+cap = cv2.VideoCapture(1)
+#url = "http://100.64.72.17:8080/shot.jpg"#changes almost everytime you use it
 
 while (True):
     #capturing data frame by frame
-    #ret, frame = cap.read()
-    frames_resp = requests.get(url)
-    frame_arr = np.array(bytearray(frames_resp.content), dtype=np.uint8)
-    frame = cv2.imdecode(frame_arr, -1)
+    ret, frame = cap.read()
+    #frames_resp = requests.get(url)
+    #frame_arr = np.array(bytearray(frames_resp.content), dtype=np.uint8)
+    #frame = cv2.imdecode(frame_arr, -1)
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, scaleFactor = 1.5, minNeighbors = 5)
     for (x, y, w, h) in faces:
@@ -37,6 +37,7 @@ while (True):
             color = (255,255,255)
             box_color = (0, 0, 255)
             stroke = 2
+
             cv2.putText(frame, name, (x,y), font, 1, color, stroke, cv2.LINE_AA)
             end_cord_x = x + w
             end_cord_y = y + h
@@ -68,5 +69,5 @@ while (True):
         break
 
 #when proccesses are done executing, release VideoCapture
-#cap.release()
+cap.release()
 cv2.destroyAllWindows()
