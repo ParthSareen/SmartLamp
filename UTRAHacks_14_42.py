@@ -3,7 +3,21 @@ import time
 import math
 import json
 
-arduino = serial.Serial('COM24', 115200)
+comPort = "COM24"
+
+arduino = serial.Serial(comPort, 115200)
+
+def get3DPoint(jsonInput):
+    try:
+        decoded = json.loads(jsonInput)
+        print(decoded)
+        print("JSON parsing example: ", decoded['position'][0],
+              decoded['position'][1],
+              decoded['position'][2])
+ 
+    except (ValueError, KeyError, TypeError):
+        print("JSON format error")
+
 horizontalOffset = 0
 verticalOffset = 0
 
@@ -61,3 +75,6 @@ def move3DPoint():
     decoded = json.load(jsonInput)
     if decoded['pinch'] > 0.7:
         updatePosition(decoded['position'][0], decoded['position'][1], decoded['position'][2])
+
+while True:
+    move3DPoint()
